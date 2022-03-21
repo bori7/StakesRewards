@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
+import Interaction from "./pages/Interaction";
 
 import "./App.css";
 
@@ -36,12 +37,12 @@ class App extends Component {
   };
 
   runExample = async () => {
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     // Stores a given value, 5 by default.
     // await contract.methods.set(5).send({ from: accounts[0] });
-    await contract.methods.set(5).send({ from: accounts[0] });
-    
+    // await contract.methods.set(5).send({ from: "0x45Cb151f59d0BF30cD22eE081293e58F88b1fd48" });
+
     // Get the value from the contract to prove it worked.
     const response = await contract.methods.get().call();
 
@@ -54,19 +55,24 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 42</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
+      <>
+        <div className="App">
+          <h1>Good to Go!!!</h1>
+          <p>Your Truffle Box is installed and ready.</p>
+          <h2>Smart Contract Example</h2>
+          <p>
+            If your contracts compiled and migrated successfully, below will show
+            a stored value of 5 (by default).
+          </p>
+          <p>
+            Try changing the value stored on <strong>line 42</strong> of App.js.
+          </p>
+          <div>The stored value is: {this.state.storageValue}</div>
+
+
+        </div>
+        <Interaction />
+      </>
     );
   }
 }
