@@ -1,4 +1,5 @@
 { 
+  "version": "0.1.0",
   "scripts": {
     "start": "cd client && npm run start",
     "build": "cd client && npm run build",
