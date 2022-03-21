@@ -5,7 +5,7 @@ import StakingRewardsContract from "../contracts/StakingRewards.json";
 function Interaction({ web0 }) {
 
     const [contractConnect, setContractConnect] = useState({ web3: web0, accounts: null, contract: null });
-    const [tokenStake, setTokenStake] = useState(0);
+    const [tokenStake, setTokenStake] = useState();
     const [balance, setBalance] = useState(0);
     const [balanceAddr, setBalanceAddr] = useState("");
     const [stakedTokens, setStakedTokens] = useState(0);
@@ -115,6 +115,7 @@ function Interaction({ web0 }) {
                 <input type="text" className="form-control mx-3"
                     value={balanceAddr}
                     onChange={(e) => { setBalanceAddr(e.target.value) }}
+                    placeholder='Enter an address to check its balance'
                 />
                 <input type="text" className="form-control mx-3" disabled
                     value={balance}
