@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import StakingRewardsContract from "../contracts/StakingRewards.json";
-import getWeb3 from "../getWeb3";
+// import getWeb3 from "../getWeb3";
 
-export default function Interaction() {
+function Interaction({ web0 }) {
 
-    const [contractConnect, setContractConnect] = useState({ web3: null, accounts: null, contract: null });
+    const [contractConnect, setContractConnect] = useState({ web3: web0, accounts: null, contract: null });
     const [tokenStake, setTokenStake] = useState(0);
     const [balance, setBalance] = useState(0);
     const [balanceAddr, setBalanceAddr] = useState("");
@@ -12,43 +12,32 @@ export default function Interaction() {
     const [transferAddr, setTransferAddr] = useState("");
     const [tokenTransfer, setTokenTransfer] = useState(0);
 
-    useEffect(() => {
-        getContracts();
 
-        // const runExample = async () => {
-        //     const { accounts, contract } = contractConnect;
 
-        //     // Stores a given value, 5 by default.
-        //     await contract.methods.set(5).send({ from: accounts[0] });
-        //     // await contract.methods.set(5).send({ from: "0x45Cb151f59d0BF30cD22eE081293e58F88b1fd48" });
-
-        //     // Get the value from the contract to prove it worked.
-        //     const response = await contract.methods.get().call();
-
-        //     // Update state with the result.
-        //     setContractConnect({ storageValue: response });
-        // };
-    });
 
     const getContracts = async () => {
         try {
             // Get network provider and web3 instance.
-            const web3 = await getWeb3();
 
+            // const web3 = await getWeb3();
+            // console.log("here");
             // Use web3 to get the user's accounts.
-            const accounts = await web3.eth.getAccounts();
+            const accounts = await contractConnect.web3.eth.getAccounts();
 
             // Get the contract instance.
-            const networkId = await web3.eth.net.getId();
+            const networkId = await contractConnect.web3.eth.net.getId();
             const deployedNetwork = StakingRewardsContract.networks[networkId];
-            const instance = new web3.eth.Contract(
+            const instance = new contractConnect.web3.eth.Contract(
                 StakingRewardsContract.abi,
                 deployedNetwork && deployedNetwork.address,
             );
 
             // Set web3, accounts, and contract to the state, and then proceed with an
             // example of interacting with the contract's methods.
-            setContractConnect({ web3, accounts, contract: instance });
+            setContractConnect({ ...contractConnect, accounts, contract: instance });
+            const response = await instance?.methods.totalSupply().call();
+
+            setStakedTokens(response);
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -57,17 +46,24 @@ export default function Interaction() {
             console.error(error);
         }
 
-        const { contract } = contractConnect;
 
-        const response = await contract.methods.totalSupply().call();
-
-        setStakedTokens(response);
     }
+
+    useEffect(() => {
+        getContracts();
+        console.log("hera");
+        // return () => {
+        //     const ac = new AbortController();
+        //     getContracts(ac.signal);
+        //     ac.abort();
+        // };
+        // eslint-disable-next-line
+    }, [])
 
     const handleStake = async () => {
         const { accounts, contract } = contractConnect;
 
-        await contract.methods.stake(tokenStake).send({ from: accounts[0] });
+        await contract?.methods.stake(tokenStake).send({ from: accounts[0] });
 
         const response = await contract.methods.totalSupply().call();
 
@@ -144,3 +140,6 @@ export default function Interaction() {
         </div>
     )
 }
+
+
+export default (Interaction);

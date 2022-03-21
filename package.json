@@ -1,13 +1,15 @@
-{
+{ 
   "scripts": {
     "start": "cd client && npm run start",
-    "build": "cd client && npm run startd",
+    "build": "cd client && npm run build",
     "test": "cd client && npm run test",
+    "predeploy": "npm run build",
     "eject": "react-scripts eject"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
     "@truffle/hdwallet-provider": "^2.0.4",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "react-scripts": "^3.4.1"
   }
 }
